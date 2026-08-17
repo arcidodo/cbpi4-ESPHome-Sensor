@@ -16,11 +16,11 @@ logger = logging.getLogger(__name__)
     Property.Text(label="Encryption Key", configurable=True,
                    description="API encryption key (base64) uit je ESPHome yaml onder 'api: encryption: key:'. Leeg laten indien niet gebruikt."),
     Property.Text(label="Entity Name", configurable=True,
-                   description="Naam (of id) van de sensor zoals gedefinieerd in de ESPHome yaml, niet de HA entity_id."),
+                   description="Naam (of id) van de sensor zoals gedefinieerd in de ESPHome yaml."),
 ])
 
 
-class HASensor(CBPiSensor):
+class ESPHomeSensor(CBPiSensor):
 
     async def on_start(self):
         self.value = 0  # initial value visible to CBPi4 UI
@@ -62,7 +62,6 @@ class HASensor(CBPiSensor):
                     await asyncio.sleep(self.timeout)
                     continue
 
-            # verbinding staat, states komen binnen via callback; alleen levend houden
             await asyncio.sleep(1)
 
     def _on_state(self, state):
@@ -87,5 +86,5 @@ class HASensor(CBPiSensor):
 
 
 def setup(cbpi):
-    cbpi.plugin.register("HomeAssistant Sensor", HASensor)
+    cbpi.plugin.register("ESPHome Sensor", ESPHomeSensor)
     pass
